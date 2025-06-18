@@ -144,4 +144,3 @@ We’re actively looking for experts and contributors in the following areas:
 
 
 > ❤️ Star this repo if you find it useful or want to follow development!
-# Self-Balance
