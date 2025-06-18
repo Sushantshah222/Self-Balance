@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<robot name="self_balance_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="common_prop.xacro"/>
+    <xacro:include filename="chassis.xacro"/>
+
+<!-- IMU -->
+    <joint name="imu_joint" type="fixed">
+        <parent link="chassis_link"/>
+        <child link="imu_link"/>
+        <origin xyz="0 0 ${chassis_h/2}" rpy="0 0 0"/>  <!-- Moved IMU to top of chassis -->
+    </joint>
+
+    <link name="imu_link"/>
+
+    <gazebo reference="imu_link">
+        <sensor name="imu_sensor" type="imu">
+            <always_on>1</always_on>
+            <update_rate>50</update_rate>
+            <visualize>true</visualize>
+            <topic>imu</topic>
+            <enable_metrics>true</enable_metrics>
+            <gz_frame_id>imu_link</gz_frame_id>
+            <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+            </plugin>
+        </sensor>
+    </gazebo>
+
+<!-- Gazebo properties for chassis -->
+    <gazebo reference="chassis_link">
+        <mu1>0.2</mu1>  <!-- Friction coefficient -->
+        <mu2>0.2</mu2>
+        <kp>1000000.0</kp>  <!-- Contact stiffness -->
+        <kd>100.0</kd>     <!-- Contact damping -->
+        <material>Gazebo/Blue</material>
+    </gazebo>
+
+<!-- Gazebo properties for wheels -->
+    <gazebo reference="left_wheel_link">
+        <mu1>1.0</mu1>  <!-- Higher friction for wheels -->
+        <mu2>1.0</mu2>
+        <kp>1000000.0</kp>
+        <kd>100.0</kd>
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <gazebo reference="right_wheel_link">
+        <mu1>1.0</mu1>
+        <mu2>1.0</mu2>
+        <kp>1000000.0</kp>
+        <kd>100.0</kd>
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+<!-- Differential Drive Plugin -->
+    <gazebo>
+        <plugin filename="libgz-sim-diff-drive-system.so" name="gz::sim::systems::DiffDrive">
+            <left_joint>left_wheel_joint</left_joint>
+            <right_joint>right_wheel_joint</right_joint>
+            <wheel_separation>${chassis_w + wheel_l}</wheel_separation>  <!-- Fixed to use wheel_l instead of wheel_r -->
+            <wheel_radius>${wheel_r}</wheel_radius>
+            <odom_publish_rate>20</odom_publish_rate>
+            <topic>cmd_vel</topic>
+        </plugin>
+
+        <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+            <topic>joint_states</topic>
+            <joint_name>left_wheel_joint</joint_name>
+            <joint_name>right_wheel_joint</joint_name>
+        </plugin>
+    </gazebo>
+</robot>

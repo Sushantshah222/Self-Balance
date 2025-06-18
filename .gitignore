@@ -1,0 +1,17 @@
+# Ignore build, install, and log folders everywhere
+**/build/
+**/install/
+**/log/
+
+# ESP-IDF build artifacts
+esp32_firmware/sdkconfig
+esp32_firmware/components/wifi/wifi_sta.h
+
+# General
+*.pyc
+__pycache__/
+.vscode/
+.idea/
+.DS_Store
+docker/
+tools/

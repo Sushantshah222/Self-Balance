@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!-- Links of the chassis -->
+    <link name="base_link"/>
+
+    <link name="chassis_link">
+        <visual>
+            <origin xyz="${chassis_l/2} 0 ${chassis_h/2}" rpy="0 0 0"/>
+            <geometry>
+                <box size="${chassis_l} ${chassis_w} ${chassis_h}"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        
+        <xacro:inertial_box m="${chassis_m}"
+                            l="${chassis_l}"
+                            w="${chassis_w}"
+                            h="${chassis_h}"
+                            xyz="${chassis_l/2} 0 ${chassis_h/2}"
+                            rpy="0 0 0" />
+        
+        <collision>
+            <geometry>
+                <box size="${chassis_l} ${chassis_w} ${chassis_h}"/>
+            </geometry>
+            <origin xyz="${chassis_l/2} 0 ${chassis_h/2}" rpy="0 0 0"/>
+        </collision>
+    </link>
+
+    <xacro:wheel prefix="left"/>
+    <xacro:wheel prefix="right"/>
+
+<!-- Joints of the chassis -->
+    <joint name="chassis_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="chassis_link"/>
+        <origin xyz="0 0 ${wheel_r}"/>
+    </joint>
+
+    <joint name="left_wheel_joint" type="continuous">
+        <parent link="chassis_link"/>
+        <child link="left_wheel_link"/>
+        <origin xyz="${chassis_l/2} ${chassis_w/2 + wheel_l/2} 0" rpy="${pi/2} 0 0"/>
+        <axis xyz="0 0 -1"/>
+    </joint>
+
+    <joint name="right_wheel_joint" type="continuous">
+        <parent link="chassis_link"/>
+        <child link="right_wheel_link"/>
+        <origin xyz="${chassis_l/2} ${-(chassis_w/2 + wheel_l/2)} 0" rpy="${pi/2} 0 0"/>
+        <axis xyz="0 0 -1"/>
+    </joint>
+</robot>
