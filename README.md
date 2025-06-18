@@ -139,6 +139,7 @@ We’re actively looking for experts and contributors in the following areas:
 
 **Yossef Hady**  
 📧 yossefhady007@gmail.com
+
 🔗 [GitHub](https://github.com/yossefhady/) | [LinkedIn](https://www.linkedin.com/in/yossefhady/)
 
 
