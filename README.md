@@ -100,7 +100,7 @@ Follow these steps to get started:
    # ROS
    cd ros2_ws/
    colcon build --symlink-install
-   src install/setup.bash
+   source install/setup.bash
 
    #ESP-IDF
    . PathTOYour/esp-idf/export.sh
